@@ -1,0 +1,10 @@
+# ROS / build artifacts
+build/
+devel/
+install/
+log/
+__pycache__/
+*.pyc
+
+# Exporter log (large, regenerated each export)
+export.log
