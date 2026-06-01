@@ -1,0 +1,37 @@
+# Claude / AI working files (session handoffs, notes, scratch)
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# ROS build artifacts
+build/
+install/
+log/
+
+# SolidWorks lock / temp files
+*.lck
+~$*
+
+# Sensitive / local
+*.local.yaml
+.env
