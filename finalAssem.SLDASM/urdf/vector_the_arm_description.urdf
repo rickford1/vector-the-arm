@@ -3,7 +3,7 @@
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="finalAssem.SLDASM">
+  name="vector_the_arm_description">
   <link
     name="base_link">
     <inertial>
@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/base_link.STL" />
+          filename="package://vector_the_arm_description/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/base_link.STL" />
+          filename="package://vector_the_arm_description/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link1.STL" />
+          filename="package://vector_the_arm_description/meshes/Link1.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link1.STL" />
+          filename="package://vector_the_arm_description/meshes/Link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link2.STL" />
+          filename="package://vector_the_arm_description/meshes/Link2.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link2.STL" />
+          filename="package://vector_the_arm_description/meshes/Link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link3.STL" />
+          filename="package://vector_the_arm_description/meshes/Link3.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link3.STL" />
+          filename="package://vector_the_arm_description/meshes/Link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -240,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link4.STL" />
+          filename="package://vector_the_arm_description/meshes/Link4.STL" />
       </geometry>
       <material
         name="">
@@ -254,7 +254,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://finalAssem.SLDASM/meshes/Link4.STL" />
+          filename="package://vector_the_arm_description/meshes/Link4.STL" />
       </geometry>
     </collision>
   </link>
