@@ -1,5 +1,5 @@
-# Claude / AI working files (session handoffs, notes, scratch)
-.claude/
+# Personal working files (session notes, scratch, drafts) — not for public repo
+.local/
 
 # Python
 __pycache__/
