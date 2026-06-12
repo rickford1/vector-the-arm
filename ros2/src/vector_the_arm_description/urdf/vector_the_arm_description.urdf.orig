@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com)
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
@@ -8,17 +8,17 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="0.0011876 -0.00024586 -0.0021651"
+        xyz="0.04017 0.036228 0.089961"
         rpy="0 0 0" />
       <mass
         value="0.47301" />
       <inertia
-        ixx="0.00060142"
-        ixy="-7.7811E-06"
-        ixz="-4.6303E-06"
-        iyy="0.00060151"
-        iyz="4.6549E-06"
-        izz="0.00099286" />
+        ixx="0.00060925"
+        ixy="-6.5656E-06"
+        ixz="-2.5475E-09"
+        iyy="0.00099286"
+        iyz="2.1203E-09"
+        izz="0.00059369" />
     </inertial>
     <visual>
       <origin
@@ -48,17 +48,17 @@
     name="Link1">
     <inertial>
       <origin
-        xyz="-0.00013887 -3.7112E-05 0.037653"
+        xyz="0 0 0.021148"
         rpy="0 0 0" />
       <mass
-        value="0.16671" />
+        value="0.078819" />
       <inertia
-        ixx="0.00013651"
-        ixy="8.7156E-12"
-        ixz="6.9648E-08"
-        iyy="0.00013384"
-        iyz="3.302E-10"
-        izz="0.00023132" />
+        ixx="0.00010458"
+        ixy="0"
+        ixz="-5.3187E-21"
+        iyy="0.00010458"
+        iyz="-1.4648E-20"
+        izz="0.00019044" />
     </inertial>
     <visual>
       <origin
@@ -88,8 +88,8 @@
     name="Joint1"
     type="revolute">
     <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
+      xyz="0.039158 -0.09063 0.038393"
+      rpy="0 0 0.78837" />
     <parent
       link="base_link" />
     <child
@@ -106,21 +106,21 @@
     name="Link2">
     <inertial>
       <origin
-        xyz="-0.09422 0.003695 -0.022118"
+        xyz="0.049091 0.01203 -0.022092"
         rpy="0 0 0" />
       <mass
-        value="0.12354" />
+        value="0.089999" />
       <inertia
-        ixx="3.6579E-05"
+        ixx="2.8107E-05"
         ixy="-1.8894E-06"
-        ixz="3.2641E-07"
-        iyy="0.00013792"
-        iyz="-6.9245E-08"
-        izz="0.00012281" />
+        ixz="3.2642E-07"
+        iyy="0.0001335"
+        iyz="-9.2084E-08"
+        izz="0.00011537" />
     </inertial>
     <visual>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -134,7 +134,7 @@
     </visual>
     <collision>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -146,7 +146,7 @@
     name="Joint2"
     type="revolute">
     <origin
-      xyz="-0.023219 -0.000282 0.07716"
+      xyz="-0.023218 0.012518 0.21186"
       rpy="3.1416 1.5708 0" />
     <parent
       link="Link1" />
@@ -164,21 +164,21 @@
     name="Link3">
     <inertial>
       <origin
-        xyz="-0.104627 -0.000063 -0.022151"
+        xyz="0.042349 0.012701 -0.022133"
         rpy="0 0 0" />
       <mass
-        value="0.14146" />
+        value="0.10792" />
       <inertia
-        ixx="4.2981E-05"
-        ixy="2.0742E-08"
-        ixz="3.9424E-07"
-        iyy="0.00016334"
-        iyz="6.9679E-10"
-        izz="0.00015045" />
+        ixx="3.8564E-05"
+        ixy="2.0743E-08"
+        ixz="4.1708E-07"
+        iyy="0.00015487"
+        iyz="6.9966E-10"
+        izz="0.00014301" />
     </inertial>
     <visual>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -192,7 +192,7 @@
     </visual>
     <collision>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -222,21 +222,21 @@
     name="Link4">
     <inertial>
       <origin
-        xyz="-0.057402 -0.000135 -0.022293"
+        xyz="0.079969 0.012699 -0.019217"
         rpy="0 0 0" />
       <mass
-        value="0.18212" />
+        value="0.14858" />
       <inertia
-        ixx="0.00011571"
-        ixy="6.8725E-09"
-        ixz="4.5323E-06"
-        iyy="0.00011637"
-        iyz="3.3483E-10"
-        izz="8.0361E-05" />
+        ixx="0.00010827"
+        ixy="6.8754E-09"
+        ixz="4.5551E-06"
+        iyy="0.0001079"
+        iyz="3.3593E-10"
+        izz="7.5944E-05" />
     </inertial>
     <visual>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -250,7 +250,7 @@
     </visual>
     <collision>
       <origin
-        xyz="-0.1347 -0.0128 0"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
         <mesh
@@ -262,14 +262,14 @@
     name="Joint4"
     type="revolute">
     <origin
-      xyz="-0.15595 -0.000044 -0.043973"
+      xyz="-0.15595 0.025556 -0.043973"
       rpy="3.1416 0 0" />
     <parent
       link="Link3" />
     <child
       link="Link4" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-1.55"
       upper="1.55"
