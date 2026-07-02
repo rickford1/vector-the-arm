@@ -2,62 +2,63 @@
 # Loaded by arm_gui.py and the future ROS bridge.
 # Numbers come from range_record.py + set_correction.py runs.
 
-port: /dev/ttyACM2
+port: /dev/ttyACM0
 baud: 1000000
 
 servos:
   - id: 1
     joint_name: base
-    type: continuous            # no hard stops
-    encoder_min: 0              # full encoder range available
+    type: continuous            # free-spinning; constrained by soft limits below
+    encoder_min: 27
     encoder_max: 4095
-    encoder_center: 2044
-    # safety soft limits (±90° from center) to avoid wraparound during GUI testing
-    soft_min: 1024
+    encoder_center: 2049
+    soft_min: 1024              # ±90° from center; keeps the 0/4095 seam behind the arm
     soft_max: 3072
-    position_correction: 0
-    direction: 1                # +1 / -1 per URDF; TBD
+    position_correction: 1146
+    direction: -1
     model: 777
-    notes: continuous rotation, no hard stops; soft-limited to ±90° for safety
+    notes: soft-limited to ±90° so it doesn't spin freely and the seam stays out of range; recalibrated 2026-07-02
 
   - id: 2
     joint_name: joint2
     type: bounded
-    encoder_min: 902            # from range_record
-    encoder_max: 3280
-    encoder_center: 2091
-    soft_min: 950               # 50-step margin from hard stops
-    soft_max: 3230
-    position_correction: -1937  # set via set_correction.py; raw range crossed 0/4095 before
-    direction: 1
-    model: 2825                 # variant; tracks identically
-    notes: 209° range, fully calibrated
+    encoder_min: 731
+    encoder_max: 3408
+    encoder_center: 2069
+    soft_min: 781               # 50-step margin from hard stops
+    soft_max: 3358
+    position_correction: -1408
+    direction: -1
+    model: 2825
+    notes: 235.3° range, recalibrated 2026-07-02
 
   - id: 3
     joint_name: joint3
     type: bounded
-    encoder_min: 981
-    encoder_max: 3064
-    encoder_center: 2022
-    soft_min: 1030          # 50-step margin from hard stops
-    soft_max: 3015
-    position_correction: 516    # retained from previous calibration
-    direction: 1
+    encoder_min: 864
+    encoder_max: 4006
+    encoder_center: 2048        # URDF-neutral pose, NOT mid-travel (2435) — this fixes the 30° visual offset
+    soft_min: 914               # 50-step margin from hard stops
+    soft_max: 3956
+    position_correction: -489
+    direction: -1
     model: 777
-    notes: 183° range, recalibrated post-arm-reassembly
+    notes: >
+      neutral anchored to URDF zero, which is offset from mechanical mid-travel; 276.2° range;
+      max (4006) is ~89 steps from the 4095 seam but the hard stop prevents crossing; recalibrated 2026-07-02
 
   - id: 4
     joint_name: joint4
     type: bounded
-    encoder_min: 1029
-    encoder_max: 3059
-    encoder_center: 2044
-    soft_min: 1080          # 50-step margin from hard stops
-    soft_max: 3010
-    position_correction: set_via_set_correction_py    # updated post-reassembly
-    direction: 1
+    encoder_min: 859
+    encoder_max: 3224
+    encoder_center: 2041
+    soft_min: 909               # 50-step margin from hard stops
+    soft_max: 3174
+    position_correction: -1627
+    direction: -1
     model: 777
-    notes: 178° range; was reassigned to wrist_roll then back to joint4
+    notes: 207.9° range, recalibrated 2026-07-02
 
   - id: 5
     joint_name: wrist_roll

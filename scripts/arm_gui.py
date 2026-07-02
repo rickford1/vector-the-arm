@@ -12,10 +12,15 @@ Global controls:
   - All torque OFF (emergency stop)
   - All to center (drives each joint to its encoder_center)
 
+If ROS 2 is sourced, also publishes /joint_states and launches
+robot_state_publisher + RViz so the real arm is mirrored live.
+
 Run:
     python3 arm_gui.py
 """
+import math
 import os
+import subprocess
 import threading
 import tkinter as tk
 from tkinter import ttk
@@ -27,8 +32,17 @@ except ImportError:
 
 from scservo_sdk import PortHandler, PacketHandler, COMM_SUCCESS
 
+try:
+    import rclpy
+    from rclpy.node import Node
+    from sensor_msgs.msg import JointState
+    ROS_AVAILABLE = True
+except ImportError:
+    ROS_AVAILABLE = False
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "..", "calibration.yaml")
+PKG_DIR = os.path.join(SCRIPT_DIR, "..", "ros2", "src", "vector_the_arm_description")
 
 ADDR_TORQUE_ENABLE = 40
 ADDR_GOAL_ACC = 41
@@ -38,7 +52,10 @@ ADDR_PRESENT_POSITION = 56
 
 DEFAULT_SPEED = 400
 DEFAULT_ACC = 20
-POLL_MS = 200          # how often we read present positions for the live display
+POLL_MS = 200
+
+SERVO_TO_JOINT = {1: "Joint1", 2: "Joint2", 3: "Joint3", 4: "Joint4"}
+STEPS_PER_RAD = 4096.0 / (2 * math.pi)
 
 
 class ServoRow:
@@ -50,6 +67,7 @@ class ServoRow:
         self.torque_var = tk.BooleanVar(value=False)
         self.current_var = tk.StringVar(value="---")
         self.goal_var = tk.IntVar(value=servo.get("encoder_center", 2048))
+        self.last_pos = None
         self._dragging = False
 
         frame = ttk.LabelFrame(parent, text=f'ID {servo["id"]} — {servo["joint_name"]}', padding=8)
@@ -93,8 +111,6 @@ class ServoRow:
             return
         if not self._dragging:
             return
-        # rate-limit: only send when dragging; final send on release
-        # (keeps bus traffic low)
 
     def _on_release(self):
         self._dragging = False
@@ -109,9 +125,14 @@ class ServoRow:
             return
         with self.lock:
             pos, comm, _ = self.pkt.read2ByteTxRx(self.port, self.servo["id"],
-                                                  ADDR_PRESENT_POSITION)
+                                                   ADDR_PRESENT_POSITION)
         if comm == COMM_SUCCESS:
+            self.last_pos = pos
             self.current_var.set(str(pos))
+
+
+def launch_rviz():
+    return [subprocess.Popen(["ros2", "launch", "vector_the_arm_description", "display_real.launch.py"])]
 
 
 def main():
@@ -125,11 +146,21 @@ def main():
     port.setBaudRate(cfg["baud"])
     bus_lock = threading.Lock()
 
+    # ROS setup
+    ros_node = None
+    js_pub = None
+    subprocs = []
+    if ROS_AVAILABLE:
+        rclpy.init()
+        ros_node = rclpy.create_node("arm_gui")
+        js_pub = ros_node.create_publisher(JointState, "joint_states", 10)
+        threading.Thread(target=rclpy.spin, args=(ros_node,), daemon=True).start()
+        subprocs = list(launch_rviz())
+
     root = tk.Tk()
     root.title("Arm — manual joint control")
     root.geometry("560x800")
 
-    # --- scrollable area for servo rows ---
     outer = ttk.Frame(root)
     outer.pack(fill="both", expand=True)
     canvas = tk.Canvas(outer, highlightthickness=0)
@@ -143,13 +174,11 @@ def main():
     canvas.configure(yscrollcommand=scrollbar.set)
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
-    # mousewheel scroll
     canvas.bind_all("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))
     canvas.bind_all("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))
 
     rows = [ServoRow(scroll_frame, s, pkt, port, bus_lock) for s in cfg["servos"]]
 
-    # global controls (outside scroll area, always visible)
     globals_frame = ttk.Frame(root, padding=8)
     globals_frame.pack(fill="x", pady=8, side="bottom")
 
@@ -175,6 +204,22 @@ def main():
     def poll_loop():
         for r in rows:
             r.poll()
+
+        if js_pub is not None and ros_node is not None:
+            msg = JointState()
+            msg.header.stamp = ros_node.get_clock().now().to_msg()
+            for r in rows:
+                sid = r.servo["id"]
+                if r.last_pos is None or sid not in SERVO_TO_JOINT:
+                    continue
+                center = r.servo.get("encoder_center", 2048)
+                direction = r.servo.get("direction", 1)
+                angle = (r.last_pos - center) / STEPS_PER_RAD * direction
+                msg.name.append(SERVO_TO_JOINT[sid])
+                msg.position.append(angle)
+            if msg.name:
+                js_pub.publish(msg)
+
         root.after(POLL_MS, poll_loop)
 
     root.after(POLL_MS, poll_loop)
@@ -182,6 +227,11 @@ def main():
     def on_close():
         all_torque_off()
         port.closePort()
+        if ros_node is not None:
+            ros_node.destroy_node()
+            rclpy.shutdown()
+        for p in subprocs:
+            p.terminate()
         root.destroy()
 
     root.protocol("WM_DELETE_WINDOW", on_close)
