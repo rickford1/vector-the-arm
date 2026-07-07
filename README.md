@@ -2,10 +2,10 @@
 
 Open-source 5-DOF printable robotic arm with vision-guided pick-and-place. Built on Feetech STS bus servos, ROS 2, MoveIt, and an Intel RealSense depth camera.
 
-> **Status:** Work in progress. Mechanical assembly is complete (5-DOF arm).
-> Joints 1–4 are fully calibrated and mirror live into RViz, and **MoveIt plans
-> and executes motions on both the simulated and the real arm**. Wrist roll and
-> gripper modules are pending design; perception is not yet integrated.
+> **Status:** Work in progress. Mechanical assembly is complete (5-DOF arm +
+> gripper). **All six servos are calibrated** and mirror live into RViz, and
+> **MoveIt plans and executes on both the simulated and the real arm** — wrist
+> roll and gripper included. Perception is not yet integrated.
 
 ## Features
 
@@ -80,6 +80,9 @@ ros2 launch vector_the_arm_moveit_config demo.launch.py
 Plans and executes against a simulated arm — no hardware needed. Good for
 trying plans before running them on the real servos.
 
+MoveIt has two planning groups: **`arm`** (Joint1–5) positions the wrist, and
+**`Gripper`** (gripper_joint) opens/closes the jaw independently.
+
 ### Drive the real arm
 
 `scripts/moveit_servo_bridge.py` is a `FollowJointTrajectory` action server that
@@ -108,9 +111,18 @@ Set a goal (Joints tab), **Plan**, then **Execute** — the servos follow.
 - Goals are clamped to soft limits, so a plan can't drive into a hard stop.
 - **Ctrl+C the bridge terminal is the E-stop** — it disables torque on exit.
 
-**4-DOF note:** the arm currently has 4 actuated joints (base yaw + 3 pitch), so
-full 6-DOF pose goals won't solve. Use **joint-space** or **position-only**
-goals. This lifts once the wrist roll and gripper are built.
+**Gripper on hardware:** the bridge currently drives only the `arm` group
+(Joint1–5). Driving the real gripper from MoveIt needs a second action server
+for `Gripper_controller` — a small follow-up.
+
+**5-DOF note:** the arm has 5 actuated joints (base yaw + 3 pitch + wrist roll) —
+still under 6, so arbitrary full pose goals may not solve. Use **joint-space** or
+**position-only** goals.
+
+**Regenerating the MoveIt config:** the Setup Assistant writes integer values
+into `config/joint_limits.yaml` (move_group needs doubles, e.g. `2.0`) and omits
+`action_ns: follow_joint_trajectory` on controllers — fix both after generating
+or move_group won't start / finds "0 controllers".
 
 ## Documentation
 
@@ -119,8 +131,9 @@ goals. This lifts once the wrist roll and gripper are built.
 ## Repo layout
 
 ```
-scripts/    Servo SDK tools, calibration utilities, manual-control + live-mirror
-            GUI, and the MoveIt→Feetech trajectory bridge
+scripts/    Servo SDK tools, calibration utilities (incl. grip-force limiter
+            set_torque_limit.py), manual-control + live-mirror GUI, and the
+            MoveIt→Feetech trajectory bridge
 ros2/       ROS 2 packages:
               vector_the_arm_description   URDF, meshes, display launches
               vector_the_arm_moveit_config MoveIt config (SRDF, controllers,

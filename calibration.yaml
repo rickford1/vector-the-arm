@@ -78,10 +78,10 @@ servos:
     type: bounded
     encoder_min: 664            # fully open
     encoder_max: 2050           # fully closed
-    encoder_center: 2050        # closed = gripper_joint 0 reference
+    encoder_center: 1745        # CAD pose = gripper_joint 0 (a MID position, not an extreme)
     soft_min: 690               # small margin off the open stop
-    soft_max: 2050              # closed; grip force capped by torque limit (addr 48), not position
+    soft_max: 2040              # margin off closed; grip force capped by torque limit (addr 48)
     position_correction: 0
-    direction: -1               # opening decreases the encoder -> positive joint angle
+    direction: 1                # opening decreases the encoder -> negative joint angle
     model: 777
-    notes: jaw 664(open)-2050(closed), 121.8° travel; closed=0 ref; set torque limit (addr 48) to cap grip force; calibrated 2026-07-07
+    notes: jaw 664(open)-2050(closed), 121.6° travel; CAD pose (joint 0) = enc 1745; open=-1.658 rad, closed=+0.468 rad; grip force via torque limit (addr 48); recalibrated 2026-07-07

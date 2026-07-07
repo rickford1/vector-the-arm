@@ -5,3 +5,5 @@ initial_positions:
   Joint2: 0
   Joint3: 0
   Joint4: 0
+  Joint5: 0
+  gripper_joint: 0

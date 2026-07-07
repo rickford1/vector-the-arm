@@ -7,6 +7,10 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
+    Gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -17,6 +21,16 @@ arm_controller:
       - Joint2
       - Joint3
       - Joint4
+      - Joint5
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+Gripper_controller:
+  ros__parameters:
+    joints:
+      - gripper_joint
     command_interfaces:
       - position
     state_interfaces:

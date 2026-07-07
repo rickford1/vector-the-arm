@@ -381,10 +381,10 @@
       link="gripper" />
     <axis
       xyz="0 0 1" />
-    <!-- 121.8 deg jaw travel: 0 = closed, 2.126 = fully open (servo 6 calibrated 2026-07-07) -->
+    <!-- jaw: 0 = CAD pose (enc 1745, mid); +1.658 = fully open; -0.468 = fully closed -->
     <limit
-      lower="0"
-      upper="2.126"
+      lower="-0.468"
+      upper="1.658"
       effort="1.0"
       velocity="1.0" />
   </joint>
