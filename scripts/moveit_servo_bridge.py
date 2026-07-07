@@ -3,8 +3,9 @@
 
 Owns the serial bus. Publishes /joint_states from live encoder reads (so
 MoveIt's start state matches the real arm), and serves the
-/arm_controller/follow_joint_trajectory action that MoveIt's
-moveit_simple_controller_manager sends planned trajectories to.
+/arm_controller/follow_joint_trajectory (Joint1-5) and
+/Gripper_controller/follow_joint_trajectory (gripper_joint) actions that
+MoveIt's moveit_simple_controller_manager sends planned trajectories to.
 
 Radian<->encoder mapping and soft limits come from calibration.yaml.
 Every commanded position is clamped to the joint's soft_min/soft_max, so a
@@ -86,7 +87,18 @@ class MoveItServoBridge(Node):
             execute_callback=self._execute,
             callback_group=cb,
         )
-        self.get_logger().info("bridge ready: torque ON, holding position, serving FollowJointTrajectory")
+        # The Gripper is its own MoveIt controller/action. _execute is
+        # joint-generic (it looks up each name in self.servos) and gripper_joint
+        # is already in self.servos, so the same callback drives the jaw.
+        self._gripper_action = ActionServer(
+            self, FollowJointTrajectory,
+            "/Gripper_controller/follow_joint_trajectory",
+            execute_callback=self._execute,
+            callback_group=cb,
+        )
+        self.get_logger().info(
+            "bridge ready: torque ON, holding position, serving arm_controller "
+            "+ Gripper_controller FollowJointTrajectory")
 
     def _angle_to_enc(self, s, angle):
         pos = int(round(s["encoder_center"] + s.get("direction", 1) * angle * STEPS_PER_RAD))

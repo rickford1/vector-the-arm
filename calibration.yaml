@@ -82,6 +82,6 @@ servos:
     soft_min: 690               # small margin off the open stop
     soft_max: 2040              # margin off closed; grip force capped by torque limit (addr 48)
     position_correction: 0
-    direction: 1                # opening decreases the encoder -> negative joint angle
+    direction: -1               # enc 664(open)->+1.658, enc 2050(closed)->-0.468, matching URDF convention
     model: 777
-    notes: jaw 664(open)-2050(closed), 121.6° travel; CAD pose (joint 0) = enc 1745; open=-1.658 rad, closed=+0.468 rad; grip force via torque limit (addr 48); recalibrated 2026-07-07
+    notes: jaw 664(open)-2050(closed), 121.6° travel; CAD pose (joint 0) = enc 1745; open=+1.658 rad, closed=-0.468 rad (matches URDF limits [-0.468, 1.658]); grip force via torque limit (addr 48); direction flipped to -1 on 2026-07-07 so the physical jaw tracks the model

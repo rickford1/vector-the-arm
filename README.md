@@ -111,9 +111,11 @@ Set a goal (Joints tab), **Plan**, then **Execute** — the servos follow.
 - Goals are clamped to soft limits, so a plan can't drive into a hard stop.
 - **Ctrl+C the bridge terminal is the E-stop** — it disables torque on exit.
 
-**Gripper on hardware:** the bridge currently drives only the `arm` group
-(Joint1–5). Driving the real gripper from MoveIt needs a second action server
-for `Gripper_controller` — a small follow-up.
+**Gripper on hardware:** the bridge serves a second `FollowJointTrajectory`
+action for `Gripper_controller` (`gripper_joint`), so the **`Gripper`** planning
+group opens/closes the real jaw too. Grip force is bounded by the servo torque
+limit (addr 48) — set it with `scripts/set_torque_limit.py` before gripping
+objects so a closed jaw doesn't overload the servo.
 
 **5-DOF note:** the arm has 5 actuated joints (base yaw + 3 pitch + wrist roll) —
 still under 6, so arbitrary full pose goals may not solve. Use **joint-space** or
