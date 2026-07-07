@@ -41,7 +41,8 @@ ADDR_GOAL_SPEED = 46
 ADDR_PRESENT_POSITION = 56
 
 STEPS_PER_RAD = 4096.0 / (2 * math.pi)
-SERVO_TO_JOINT = {1: "Joint1", 2: "Joint2", 3: "Joint3", 4: "Joint4"}
+SERVO_TO_JOINT = {1: "Joint1", 2: "Joint2", 3: "Joint3", 4: "Joint4",
+                  5: "Joint5", 6: "gripper_joint"}
 
 DEFAULT_SPEED = 400   # conservative; RViz velocity scaling limits the plan too
 DEFAULT_ACC = 20

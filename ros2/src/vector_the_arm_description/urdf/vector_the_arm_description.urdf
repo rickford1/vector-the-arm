@@ -276,4 +276,116 @@
       effort="3.0"
       velocity="2.0" />
   </joint>
+  <link
+    name="Link5">
+    <inertial>
+      <origin
+        xyz="-0.0037812 -7.5442E-05 0.0098443"
+        rpy="0 0 0" />
+      <mass
+        value="0.15471" />
+      <inertia
+        ixx="0.00011426"
+        ixy="2.9963E-08"
+        ixz="-2.8589E-05"
+        iyy="0.0001344"
+        iyz="1.6437E-08"
+        izz="7.8003E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vector_the_arm_description/meshes/Link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vector_the_arm_description/meshes/Link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint5"
+    type="continuous">
+    <origin
+      xyz="-0.1347 -0.000286 -0.022559"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="Link4" />
+    <child
+      link="Link5" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="gripper">
+    <inertial>
+      <origin
+        xyz="-0.039632 -0.0052695 0.00073607"
+        rpy="0 0 0" />
+      <mass
+        value="0.020259" />
+      <inertia
+        ixx="7.7248E-06"
+        ixy="-5.4478E-07"
+        ixz="-1.4244E-08"
+        iyy="1.3735E-05"
+        iyz="-3.6395E-09"
+        izz="7.4629E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0.008531 0.002823 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vector_the_arm_description/meshes/gripper.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.008531 0.002823 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://vector_the_arm_description/meshes/gripper.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gripper_joint"
+    type="revolute">
+    <origin
+      xyz="0.002823 0 -0.008531"
+      rpy="1.5708 -1.5708 0" />
+    <parent
+      link="Link5" />
+    <child
+      link="gripper" />
+    <axis
+      xyz="0 0 1" />
+    <!-- 121.8 deg jaw travel: 0 = closed, 2.126 = fully open (servo 6 calibrated 2026-07-07) -->
+    <limit
+      lower="0"
+      upper="2.126"
+      effort="1.0"
+      velocity="1.0" />
+  </joint>
 </robot>

@@ -62,22 +62,26 @@ servos:
 
   - id: 5
     joint_name: wrist_roll
-    type: uncalibrated
+    type: continuous            # free-spinning wrist roll, no hard stops
+    encoder_min: 0
+    encoder_max: 4095
+    encoder_center: 2048
+    soft_min: 100               # ~±170° from center; keeps off the 0/4095 seam
+    soft_max: 3996              # tighten if the cable twists before this
+    position_correction: -1956
+    direction: 1                # verify in RViz; flip to -1 if it rolls backwards
     model: 777
-    notes: |
-      new servo, factory-flashed to ID=5. wrist roll module not yet built.
-      when mounted on the wrist roll axis:
-        - drive to physical midpoint
-        - if encoder reads far from 2048, run set_correction.py --target 2048
-        - run range_record.py for soft limits
-        - software-limit to ±180° to avoid wire-twist past the cable-loop slack
+    notes: 360° free spin; neutral anchored at 2048; soft-limited to ~±170° for wire twist; calibrated 2026-07-07
 
   - id: 6
     joint_name: gripper
-    type: uncalibrated
-    model: TBD
-    notes: |
-      6th servo not yet purchased. when acquired:
-        - flash to ID=6 with servo_id_setup.py (one servo at a time on the bus!)
-        - calibrate by recording fully-open and fully-closed encoder positions
-        - set torque limit (addr 48) to cap grip force
+    type: bounded
+    encoder_min: 664            # fully open
+    encoder_max: 2050           # fully closed
+    encoder_center: 2050        # closed = gripper_joint 0 reference
+    soft_min: 690               # small margin off the open stop
+    soft_max: 2050              # closed; grip force capped by torque limit (addr 48), not position
+    position_correction: 0
+    direction: -1               # opening decreases the encoder -> positive joint angle
+    model: 777
+    notes: jaw 664(open)-2050(closed), 121.8° travel; closed=0 ref; set torque limit (addr 48) to cap grip force; calibrated 2026-07-07

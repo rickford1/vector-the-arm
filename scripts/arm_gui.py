@@ -54,7 +54,8 @@ DEFAULT_SPEED = 400
 DEFAULT_ACC = 20
 POLL_MS = 200
 
-SERVO_TO_JOINT = {1: "Joint1", 2: "Joint2", 3: "Joint3", 4: "Joint4"}
+SERVO_TO_JOINT = {1: "Joint1", 2: "Joint2", 3: "Joint3", 4: "Joint4",
+                  5: "Joint5", 6: "gripper_joint"}
 STEPS_PER_RAD = 4096.0 / (2 * math.pi)
 
 
